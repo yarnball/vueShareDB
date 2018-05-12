@@ -37,11 +37,7 @@ export default {
       this.results = query.results.map(e => e.data)
     }
 
-    var query = connection.createSubscribeQuery('players', {
-      $sort: {
-        uid: -1
-      }
-    })
+    var query = connection.createSubscribeQuery('players', { $sort: { uid: -1 } })
     query.on('ready', update)
     query.on('changed', update)
   },

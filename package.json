@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "sharedb": "^1.0.0-beta.8",
+    "sharedb-mongo": "^1.0.0-beta.4",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
