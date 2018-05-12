@@ -4,6 +4,12 @@
 
 ## Build Setup
 
+For dev, running
+`npm start`
+Will run the client on port 8080, and the end point on 8081
+
+For build, it will compile the vue app to `/dist` and the express serve will run it from there. Remeber to update the port
+
 ``` bash
 # install dependencies
 npm install
@@ -17,3 +23,7 @@ npm run build
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## OTypes
+- To query data, there are special parametres:
+    - https://github.com/ottypes/json0

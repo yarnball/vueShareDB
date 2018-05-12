@@ -1,8 +1,23 @@
 <template>
-  <div>
-    {{ res }}
-    <button @click='testShare()'> Test shareDB</button>
+<div>
+  <div v-for="(res, i) in results"
+       v-bind:key="i">
+    {{res.name}} <b> {{ res.score }} </b> <br/>
+    <input type="text"
+           name="words"
+           text
+           v-on:keyup='updateName($event, res.uid)'
+           v-model="res.name">
+    <button @click='givePoints(res.uid)'> Add points</button>
+    <button @click='updateArr(res.uid)'> Test add to array</button>
+    <br/>
+    <span v-for="(xy, i) in res.tales" v-bind:key="i">
+      {{ xy }}
+    </span>
+    <i> {{ res.uid }}</i>
   </div>
+</div>
+
 </template>
 
 <script>
@@ -12,32 +27,53 @@ export default {
   name: 'hello',
   data () {
     return {
-      res: ''
+      results: '',
+      idMatch: {}
     }
   },
   mounted () {
-    var query = connection.createSubscribeQuery('players', {$sort: {score: -1}})
+    const update = () => {
+      this.idMatch = query.results.map(e => e).reduce((a, t) => ({ ...a, [t.data.uid]: { sid: t.id } }), {})
+      this.results = query.results.map(e => e.data)
+    }
+
+    var query = connection.createSubscribeQuery('players', { $sort: { uid: -1 } })
     query.on('ready', update)
     query.on('changed', update)
-    function update () {
-      console.log('magic', query.results)
-      this.res = query.results
-      // comp.setState({players: query.results});
-    }
-    console.log(this.$el) // I'm text inside the component.
   },
   methods: {
-    testShare () {
-      var op = [{p: ['score'], na: 15}]
-      connection.get('players', 1).submitOp(op, function (err) {
-        console.log('adding this?', connection.get('players', 1).data)
-        if (err) { console.error(err) }
+    givePoints (id) {
+      id = this.idMatch[id].sid
+      var op = [ { p: [ 'score' ], na: 20 } ]
+      connection.get('players', id).submitOp(op, function (err) {
+        if (err) {
+          console.error(err)
+        }
       })
-      this.res = connection.get('players', 1).data.score
-      // console.log('see', connection.get('players', 1).data )
+    },
+    updateName (text, id) {
+      id = this.idMatch[id].sid
+      text = text.target.value
+      var op = [ { p: [ 'name' ], oi: text } ]
+      connection.get('players', id).submitOp(op, function (err) {
+        if (err) {
+          console.error(err)
+        }
+      })
+    },
+    updateArr (id) {
+      id = this.idMatch[id].sid
+      // var op = [ { p: [ 'name' ], oi: text } ]
+      var op = [{p: ['tales', 0], li: Math.floor(Math.random() * 300) + 1}]
+      connection.get('players', id).submitOp(op, function (err) {
+        if (err) {
+          console.error(err)
+        }
+      })
     }
 
   }
 
 }
+
 </script>
