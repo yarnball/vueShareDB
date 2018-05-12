@@ -8,13 +8,16 @@ var WebSocketJSONStream = require('websocket-json-stream');
 var WebSocket = require('ws');
 var util = require('util');
 
-var share = ShareDB({db: new ShareDBMingoMemory()});
+var backend = ShareDB({db: new ShareDBMingoMemory()});
+
+// const db = require('sharedb-mongo')('mongodb://localhost:27017/test');
+// const backend = new ShareDB({db});
 
 createDoc(startServer);
 
 function createDoc(callback) {
-  var connection = share.connect();
-  
+  var connection = backend.connect();
+
   // var doc = connection.get('examples', 'counter');
   // doc.fetch(function(err) {
   //   if (err) throw err;
@@ -51,7 +54,7 @@ function startServer() {
   var wss = new WebSocket.Server({server: server});
   wss.on('connection', function(ws, req) {
     var stream = new WebSocketJSONStream(ws);
-    share.listen(stream);
+    backend.listen(stream);
   });
 
   server.listen(8081);
