@@ -14,22 +14,30 @@ createDoc(startServer);
 
 function createDoc(callback) {
   var connection = share.connect();
-  connection.createFetchQuery('players', {}, {}, function(err, results) {
-    if (err) { throw err; }
-
-    if (results.length === 0) {
-      var names = ["Ada Lovelace", "Grace Hopper", "Marie Curie",
-                   "Carl Friedrich Gauss", "Nikola Tesla", "Claude Shannon"];
-
-      names.forEach(function(name, index) {
-        var doc = connection.get('players', ''+index);
-        var data = {name: name, score: Math.floor(Math.random() * 10) * 5};
-        doc.create(data);
-      });
-      callback();
+  var doc = connection.get('examples', 'counter');
+  doc.fetch(function(err) {
+    if (err) throw err;
+    if (doc.type === null) {
+      doc.create({numClicks: 0}, callback);
+      return;
     }
-    
+    callback();
   });
+  // connection.createFetchQuery('players', {}, {}, function(err, results) {
+  //   if (err) { throw err; }
+
+  //   if (results.length === 0) {
+  //     var names = ["Ada Lovelace", "Grace Hopper", "Marie Curie",
+  //                  "Carl Friedrich Gauss", "Nikola Tesla", "Claude Shannon"];
+
+  //     names.forEach(function(name, index) {
+  //       var doc = connection.get('players', ''+index);
+  //       var data = {name: name, score: Math.floor(Math.random() * 10) * 5};
+  //       doc.create(data);
+  //     });
+  //     callback();
+  //   }
+  // });
 }
 
 function startServer() {
@@ -45,6 +53,6 @@ function startServer() {
     share.listen(stream);
   });
 
-  server.listen(8080);
-  console.log('Listening on http://localhost:8080');
+  server.listen(8081);
+  console.log('Listening on http://localhost:8081. Build will post from here');
 }

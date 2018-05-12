@@ -4,6 +4,12 @@
 
 ## Build Setup
 
+For dev, running
+`npm start`
+Will run the client on port 8080, and the end point on 8081
+
+For build, it will compile the express app in itself (so make sure to update the connection to point to a new port)
+
 ``` bash
 # install dependencies
 npm install

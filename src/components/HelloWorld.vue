@@ -17,14 +17,14 @@ export default {
   },
   mounted () {
     var doc = connection.get('examples', 'counter')
-    doc.subscribe(this.showNumbers)
-    doc.on('op', this.showNumbers)
+    doc.subscribe(showNumbers)
+    doc.on('op', showNumbers)
+    var _this = this
+    function showNumbers () {
+      _this.res = doc.data.numClicks
+    };
   },
   methods: {
-    showNumbers () {
-      var doc = connection.get('examples', 'counter')
-      this.res = doc.data.numClicks
-    },
     testShare () {
       var doc = connection.get('examples', 'counter')
       doc.submitOp([{p: ['numClicks'], na: 1}])
