@@ -8,7 +8,7 @@ For dev, running
 `npm start`
 Will run the client on port 8080, and the end point on 8081
 
-For build, it will compile the express app in itself (so make sure to update the connection to point to a new port)
+For build, it will compile the vue app to `/dist` and the express serve will run it from there. Remeber to update the port
 
 ``` bash
 # install dependencies

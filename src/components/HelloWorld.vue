@@ -16,26 +16,23 @@ export default {
     }
   },
   mounted () {
-    var doc = connection.get('examples', 'counter')
-    doc.subscribe(showNumbers)
-    doc.on('op', showNumbers)
+    var query = connection.createSubscribeQuery('players', {$sort: {score: -1}});
+    query.on('ready', update);
+    query.on('changed', update);
     var _this = this
-    function showNumbers () {
-      _this.res = doc.data.numClicks
+    function update () {
+      // console.log('play', query.results.map(e=>e.data))
+      _this.res = query.results.map(e=>e.data)
     };
   },
   methods: {
     testShare () {
-      var doc = connection.get('examples', 'counter')
-      doc.submitOp([{p: ['numClicks'], na: 1}])
-      // console.log( doc.data.numClicks)
-      // var op = [{p: ['score'], na: 15}]
-      // connection.get('players', 1).submitOp(op, function (err) {
-      //   console.log('adding this?', connection.get('players', 1).data)
-      //   if (err) { console.error(err) }
-      // })
-      // this.res = connection.get('players', 1).data.score
-      // console.log('see', connection.get('players', 1).data )
+    var op = [{p: ['score'], na: 15}];
+      connection.get('players', 1).submitOp(op, function(err) {
+        console.log('adding this?', connection.get('players', 1).data)
+        const rest = connection.get('players', 1).data
+        if (err) { console.error(err); return; }
+      });
     }
 
   }
