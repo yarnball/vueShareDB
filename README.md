@@ -23,3 +23,7 @@ npm run build
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## OTypes
+- To query data, there are special parametres:
+    - https://github.com/ottypes/json0

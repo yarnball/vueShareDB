@@ -13,6 +13,10 @@ var backend = ShareDB({db: new ShareDBMingoMemory()});
 // const db = require('sharedb-mongo')('mongodb://localhost:27017/test');
 // const backend = new ShareDB({db});
 
+const uniqId = val => {
+  return Math.random().toString(36).substr(2, 9)
+}
+
 createDoc(startServer);
 
 function createDoc(callback) {
@@ -36,9 +40,10 @@ function createDoc(callback) {
 
       names.forEach(function(name, index) {
         var doc = connection.get('players', ''+index);
-        var data = {name: name, score: Math.floor(Math.random() * 10) * 5};
+        var data = {name: name, score: Math.floor(Math.random() * 10) * 5, uid: uniqId(), tales: [1,2,3] };
         doc.create(data);
       });
+
       callback();
     }
   });
