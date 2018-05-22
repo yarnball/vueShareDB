@@ -12,7 +12,7 @@
     <button @click='updateArr(res.uid)'> Test add to array</button>
     <br/>
     <span v-for="(xy, i) in res.tales" v-bind:key="i">
-      {{ xy }}
+      {{ xy }}<button @click='rmvArr(res.uid, xy)'> [x] </button>
     </span>
     <i> {{ res.uid }}</i>
   </div>
@@ -22,6 +22,7 @@
 
 <script>
 import connection from '../connection'
+import { getArrIndx, rmvArr } from '@/utils/helpers'
 
 export default {
   name: 'hello',
@@ -63,13 +64,18 @@ export default {
     },
     updateArr (id) {
       id = this.idMatch[id].sid
-      // var op = [ { p: [ 'name' ], oi: text } ]
       var op = [{p: ['tales', 0], li: Math.floor(Math.random() * 300) + 1}]
       connection.get('players', id).submitOp(op, function (err) {
         if (err) {
           console.error(err)
         }
       })
+    },
+    rmvArr (id, val) {
+      const inx = getArrIndx(this.results, id, val, 'tales')
+      // WARNING: Make sure the order doesn't change
+      id = this.idMatch[id].sid
+      rmvArr('tales', inx, val, id)
     }
 
   }

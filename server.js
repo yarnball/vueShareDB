@@ -9,15 +9,13 @@ var WebSocket = require('ws');
 var util = require('util');
 var constants = require('./constants');
 
-// var backend = ShareDB({db: new ShareDBMingoMemory()});
+var backend = ShareDB({db: new ShareDBMingoMemory()});
 
-var db = require('sharedb-mongo')(constants.MONGO_URL);
-var backend = new ShareDB({db});
+// var db = require('sharedb-mongo')(constants.MONGO_URL);
+// var backend = new ShareDB({db});
 
 createDoc(startServer);
 
-// const db = require('sharedb-mongo')('mongodb://localhost:27017/test');
-// const backend = new ShareDB({db});
 
 const uniqId = val => {
   return Math.random()
@@ -28,16 +26,6 @@ const uniqId = val => {
 
 function createDoc(callback) {
   var connection = backend.connect();
-// console.log('creating doc?', connection)
-  // var doc = connection.get('examples', 'counter');
-  // doc.fetch(function(err) {
-  //   if (err) throw err;
-  //   if (doc.type === null) {
-  //     doc.create({numClicks: 0}, callback);
-  //     return;
-  //   }
-  //   callback();
-  // });
   connection.createFetchQuery('players', {}, {}, function(err, results) {
     if (err) { throw err; }
 

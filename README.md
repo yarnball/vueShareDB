@@ -27,3 +27,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ## OTypes
 - To query data, there are special parametres:
     - https://github.com/ottypes/json0
+
+## Running test
+- `npm run build`
+- `serve /dist`
+
+* npm -g serv will act as a simple host/server for my files
